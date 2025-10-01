@@ -1,0 +1,21 @@
+Vocab Class - just use an enum
+Make a token struct 
+Adjust the grammar so it's cleaner based on what Sophie suggested:
+    - remove the rover . command syntax
+    - turn (left or right)
+    - move (int) for number of spaces
+    - repeat (int) for looping (no arg infinite loop)
+    - ? prints map
+    - remove semicolons
+    - remove variable declarations
+Several other aspects of the grammar can be taken out i'm just not sur what they are yet
+Clean up my nasty ass code
+
+Simulation, algorithm for solving mazes and then producing code in the DSL for the optimal path to solve the maze
+Tool to generate mazes instead of manually making them (maybe its own crate)
+Multiple different characters used in the map for things like one-way gates for example
+
+General Stuff:
+Spend more time reading the rust book to get a better idea of some features i could be using
+A lot of the initial stuff is deciphering what i did 3 years ago with not enough comments
+This is really hard and i'm in over my head but don't give up

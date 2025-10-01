@@ -1,0 +1,16 @@
+<program>   ::= <stmts>
+<block>     ::= { <stmts> }
+<stmts>     ::= e
+                | <stmt> <stmts>
+<stmt>      ::=
+                | <feature>
+                | IF <bool> <block>
+                | IF <bool> <block> ELSE <block>
+                | REPEAT INT <block>
+                | <block>
+<feature>   ::=
+                |   show (use ? for this)
+                |   turn (right | left)
+                |   move INT
+                |   looking 'CHAR'
+
