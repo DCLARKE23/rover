@@ -19,3 +19,8 @@ General Stuff:
 Spend more time reading the rust book to get a better idea of some features i could be using
 A lot of the initial stuff is deciphering what i did 3 years ago with not enough comments
 This is really hard and i'm in over my head but don't give up
+
+
+For tokenize:
+- for the words like turn and stuff like that, if i see the first character is t, check if the next few spell turn
+- if they don't, error, otherwise add turn to the vec
