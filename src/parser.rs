@@ -1,8 +1,10 @@
-use std::fs::{read_to_string, File};
-use std::io::{self, Read};
+use std::fs::{File};
+use std::io::{Read};
+use std::iter::Peekable;
 use std::path::Path;
 use std::str::Chars;
 
+#[derive(Debug)]
 pub enum Token {
     Turn,
     Move,
@@ -19,7 +21,7 @@ pub enum Token {
 pub fn read_file (file_path: &Path) -> String {
     let mut file = File::open(file_path).unwrap();
     let mut contents = String::new();
-    file.read_to_string(&mut contents);
+    file.read_to_string(&mut contents).unwrap();
     contents
 }
 
@@ -27,13 +29,14 @@ pub fn read_file (file_path: &Path) -> String {
 // - if for example there's something like "move{", the function will eat the { and only return token::move and missing a token
 // - check docs sophie sent me to fix this issue
 
-pub fn scan_token (chars: &mut Chars) -> Option<Token> {
-    while chars.next().filter(|c| c.is_whitespace()).is_some(){}
-    match chars.next() {
+pub fn scan_token (chars: &mut Peekable<Chars>) -> Option<Token> {
+    while chars.next_if(|c| c.is_whitespace()).is_some() {} 
+    match chars.next() {    // skips over the first non-whitespace char even with trying to fix it in match c alphabetic
+        // potentially match on something other than chars.next()
         Some(c) if c.is_alphabetic() => {
             let mut buf = String::new();
             buf.push(c);
-            while let Some(x) = chars.next().filter(|c| c.is_alphabetic()){
+            while let Some(x) = chars.next_if(|c| c.is_alphabetic()){
                 buf.push(x);
             }
             match buf.as_str() {
@@ -49,7 +52,7 @@ pub fn scan_token (chars: &mut Chars) -> Option<Token> {
         Some(c) if c.is_ascii_digit() => {
             let mut buf = String::new();
             buf.push(c);
-            while let Some(x) = chars.next().filter(|c| c.is_ascii_digit()){
+            while let Some(x) = chars.next_if(|c| c.is_ascii_digit()){
                 buf.push(x);
             }
             Some(Token::Int(buf.parse().unwrap()))
@@ -61,7 +64,7 @@ pub fn scan_token (chars: &mut Chars) -> Option<Token> {
                 Some(c) => c,
                 None => panic!(),
             };
-            if chars.next().is_some_and(|c| c == '\'') {
+            if chars.next_if(|c| *c == '\'').is_some() {
                 Some(Token::Char(c))
             } else {
                 panic!();
@@ -74,11 +77,12 @@ pub fn scan_token (chars: &mut Chars) -> Option<Token> {
 
 
 pub fn tokenize (s: &str) -> Vec<Token> {
-    let mut chars = s.chars();
+    let mut chars = s.chars().peekable();
     let mut tokens = Vec::new();
     while let Some(t) = scan_token(&mut chars){
         tokens.push(t);
     }
+    println!("{:?}", tokens);
     tokens
 
 }
