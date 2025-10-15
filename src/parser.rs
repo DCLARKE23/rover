@@ -23,13 +23,12 @@ pub fn read_file (file_path: &Path) -> String {
     contents
 }
 
-// scan_token doesn't handle whitespace
-// - put before the main match, check if whitespace and keep moving until it's not anymore
 // peekable iterator
 // - if for example there's something like "move{", the function will eat the { and only return token::move and missing a token
 // - check docs sophie sent me to fix this issue
 
 pub fn scan_token (chars: &mut Chars) -> Option<Token> {
+    while chars.next().filter(|c| c.is_whitespace()).is_some(){}
     match chars.next() {
         Some(c) if c.is_alphabetic() => {
             let mut buf = String::new();
